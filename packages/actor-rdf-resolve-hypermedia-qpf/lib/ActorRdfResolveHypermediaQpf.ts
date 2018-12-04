@@ -25,7 +25,7 @@ implements IActorRdfResolveHypermediaQpfArgs {
         + ' requires a single source with a Hypermedia \'hypermedia\' entrypoint to be present in the context.');
     }
 
-    if (!action.metadata || !action.metadata.searchForms) {
+    if (!action.metadata || !action.metadata.searchForms || !action.metadata.searchForms.values.length) {
       throw new Error(`${this.name} requires metadata and searchForms to work on.`);
     }
 
