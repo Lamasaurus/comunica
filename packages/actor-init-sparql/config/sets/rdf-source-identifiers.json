@@ -19,11 +19,25 @@
       }
     },
     {
+      "@id": "config-sets:rdf-source-identifiers.json#myActorRdfSourceIdentifierHypermediaTree",
+      "@type": "ActorRdfSourceIdentifierHypermediaQpf",
+      "carsihq:Actor/RdfSourceIdentifier/HypermediaQpf/mediatorHttp": {
+        "@id": "config-sets:http.json#mediatorHttp"
+      },
+      "carsihq:Actor/RdfSourceIdentifier/HypermediaQpf/toContain": [
+        "http://www.w3.org/ns/hydra/core#",
+        "https://w3id.org/tree#",
+        "view",
+        "node",
+        "Collection"
+      ]
+    },
+    {
       "@id": "config-sets:rdf-source-identifiers.json#myActorRdfSourceIdentifierSparql",
       "@type": "ActorRdfSourceIdentifierSparql",
       "carsis:Actor/RdfSourceIdentifier/Sparql/mediatorHttp": {
         "@id": "config-sets:http.json#mediatorHttp"
-      }
+      }    
     },
     {
       "@id": "config-sets:rdf-source-identifiers.json#myActorRdfSourceIdentifierFileContentType",
