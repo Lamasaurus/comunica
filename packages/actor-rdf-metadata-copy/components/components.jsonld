@@ -1,0 +1,9 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-copy/^1.0.0/components/context.jsonld",
+  "@id": "npmd:@comunica/actor-rdf-metadata-copy",
+  "@type": "Module",
+  "requireName": "@comunica/actor-rdf-metadata-copy",
+  "import": [
+    "files-carmc:components/Actor/RdfMetadata/Copy.jsonld"
+  ]
+}

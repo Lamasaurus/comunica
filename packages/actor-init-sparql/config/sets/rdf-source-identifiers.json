@@ -27,9 +27,7 @@
       "carsihq:Actor/RdfSourceIdentifier/HypermediaQpf/toContain": [
         "http://www.w3.org/ns/hydra/core#",
         "https://w3id.org/tree#",
-        "view",
-        "node",
-        "Collection"
+        "node"
       ]
     },
     {

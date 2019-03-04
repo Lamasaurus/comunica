@@ -1,0 +1,12 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/componentsjs/^3.0.0/components/context.jsonld",
+    {
+      "npmd": "https://linkedsoftwaredependencies.org/bundles/npm/",
+      "carmc": "npmd:@comunica/actor-rdf-metadata-copy/",
+      "files-carmc": "carmc:^1.0.0/",
+
+      "ActorRdfMetadataCopy": "carmc:Actor/RdfMetadata/Copy"
+    }
+  ]
+}

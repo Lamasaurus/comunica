@@ -6,8 +6,10 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-metadata-extract/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-extract-hydra-controls/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-extract-hydra-count/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-extract-tree/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-metadata/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-primary-topic/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-copy/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-triple-predicate/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-next/^1.0.0/components/context.jsonld",
@@ -64,6 +66,10 @@
     },
 
     {
+      "@id": "config-sets:resolve-hypermedia.json#myRdfMetadataCopy",
+      "@type": "ActorRdfMetadataCopy"
+    },
+    {
       "@id": "config-sets:resolve-hypermedia.json#myRdfMetadataPrimaryTopic",
       "@type": "ActorRdfMetadataPrimaryTopic"
     },
@@ -79,6 +85,10 @@
     {
       "@id": "config-sets:resolve-hypermedia.json#myRdfMetadataExtractHydraCount",
       "@type": "ActorRdfMetadataExtractHydraCount"
+    },
+    {
+      "@id": "config-sets:resolve-hypermedia.json#myRdfMetadataExtractTree",
+      "@type": "ActorRdfMetadataExtractTree"
     }
   ]
 }
