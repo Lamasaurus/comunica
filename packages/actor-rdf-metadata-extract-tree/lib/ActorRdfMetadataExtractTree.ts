@@ -9,15 +9,16 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
 
   public readonly predicates: string[];
   public static readonly RELATIONAL_TYPES: string[] = [
-    "tree:StringCompletesRelation",
-    "tree:GreaterThanRelation",
-    "tree:GreaterOrEqualThanRelation",
-    "tree:LesserThanRelation",
-    "tree:LesserOrEqualThanRelation",
-    "tree:EqualThanRelation",
-    "tree:GeospatiallyContainsRelation",
-    "tree:InBetweenRelation",
+    "https://w3id.org/tree#StringCompletesRelation",
+    "https://w3id.org/tree#GreaterThanRelation",
+    "https://w3id.org/tree#GreaterOrEqualThanRelation",
+    "https://w3id.org/tree#LesserThanRelation",
+    "https://w3id.org/tree#LesserOrEqualThanRelation",
+    "https://w3id.org/tree#EqualThanRelation",
+    "https://w3id.org/tree#GeospatiallyContainsRelation",
+    "https://w3id.org/tree#InBetweenRelation",
   ];
+  public static readonly TYPE: string = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 
   constructor(args: IActorRdfParseFixedMediaTypesArgs) {
     super(args);
@@ -35,7 +36,7 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
 
       // Immediately resolve when a value has been found.
       action.metadata.on('data', (quad) => {
-        if (quad.object.value === "https://w3id.org/tree#Node") {
+        if (quad.predicate.value === ActorRdfMetadataExtractTree.TYPE && quad.object.value === "https://w3id.org/tree#Node") {
           const nodeId = quad.subject.value;
           treeConstructor.nodes[nodeId] = new Node(nodeId);
         } else if (quad.predicate.value === "https://w3id.org/tree#hasChildRelation") {
@@ -54,7 +55,7 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
           const nodeId = quad.subject.value;
           const value = quad.object.value;
           treeConstructor.nodeValues[nodeId] = value;
-        } else if (quad.object.value in ActorRdfMetadataExtractTree.RELATIONAL_TYPES) {
+        } else if (quad.predicate.value === ActorRdfMetadataExtractTree.TYPE && ActorRdfMetadataExtractTree.RELATIONAL_TYPES.includes(quad.object.value )) {
           const blankNodeId = quad.subject.value;
           const relationType = quad.object.value;
           treeConstructor.relationTypes[blankNodeId] = relationType;
@@ -63,6 +64,7 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
 
       // If no value has been found, assume infinity.
       action.metadata.on('end', () => {
+        debugger;
         const tree = treeConstructor.constructTree();
         resolve({ metadata: { tree } });
       });
