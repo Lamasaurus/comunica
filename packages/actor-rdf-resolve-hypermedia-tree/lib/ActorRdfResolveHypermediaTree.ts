@@ -27,6 +27,7 @@ implements IActorRdfResolveHypermediaTreeArgs {
   }
 
   public async test(action: IActionRdfResolveHypermedia): Promise<IActorTest> {
+    debugger;
     if (!(action.context.get(KEY_CONTEXT_SOURCE).type === "hypermedia")) {
       throw new Error(this.name
         + ' requires a single source with a Hypermedia \'hypermedia\' entrypoint to be present in the context.');
@@ -46,8 +47,6 @@ implements IActorRdfResolveHypermediaTreeArgs {
    */
   public async run(action: IActionRdfResolveHypermedia):
   Promise<IActorRdfResolveHypermediaOutput> {
-    debugger;
-
     // Get the old tree
     if (!action.context.get(KEY_CONTEXT_TREE))
       action.context = action.context.set(KEY_CONTEXT_TREE, new Tree({})); 
@@ -65,13 +64,11 @@ implements IActorRdfResolveHypermediaTreeArgs {
         template: null,
         mappings: null,
         getUri: (entries: {[id: string]: string}): string => {
-          const tree = action.context.get(KEY_CONTEXT_TREE);
-          // Find the root node
+          const tree: Tree = action.context.get(KEY_CONTEXT_TREE);
+          const nextNode: TreeNode = tree.getLeftMosteUnloadedNode();
           
-          // find left most unvisited node 
-          return "";
+          return nextNode.id;
         }
-
       }
     }
   }

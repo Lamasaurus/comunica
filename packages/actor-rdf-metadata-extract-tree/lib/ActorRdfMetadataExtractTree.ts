@@ -25,6 +25,7 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
   }
 
   public async test(action: IActionRdfMetadataExtract): Promise<IActorTest> {
+    throw new Error('This actor is disabled.');
     return true;
   }
 
@@ -58,6 +59,8 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
           const blankNodeId = quad.subject.value;
           const relationType = quad.object.value;
           treeConstructor.relationTypes[blankNodeId] = relationType;
+        } else if (quad.predicate.value === "http://www.w3.org/ns/hydra/core#member") {
+          debugger;
         }
       });
 
@@ -76,12 +79,14 @@ extends IActorArgs<IActionRdfMetadataExtract, IActorTest, IActorRdfMetadataExtra
   predicates: string[];
 }
 
-class TreeConstructor {
+export class TreeConstructor {
   nodes: {[id: string]: TreeNode} = {};
   nodeValues: {[id: string]: any} = {};
   nodeIdMap: {[id: string]: string} = {};
   relations: {[id: string]: string[]} = {};
   relationTypes: {[id: string]: string} = {};
+  treeMembers: {[id: string]: string[]} = {};
+  potentialData: {[id: string]: any[]} = {};
 
   public constructTree() {
     // Put all relations in place
@@ -96,6 +101,13 @@ class TreeConstructor {
       }
     }
 
+    debugger;
+    for (const nodeId in this.treeMembers) {
+      for (const member of this.treeMembers[nodeId]) {
+        this.nodes[nodeId].members.push(this.loadData(member));
+      }
+    }
+
     // Add values to the nodes
     for (const node of Object.keys(this.nodes))
       this.nodes[node].setValue(this.nodeValues[node]);
@@ -106,6 +118,16 @@ class TreeConstructor {
   public addTreeNode(nodeId: string) {
     if (!(nodeId in this.nodes))
       this.nodes[nodeId] = new TreeNode(nodeId);
+  }
+
+  private loadData(subjectId: string) {
+    const data = this.potentialData[subjectId];
+
+    for (const quad of data) {
+      data.push(this.loadData(quad.object.value));
+    }
+
+    return data;
   }
 }
 
@@ -140,17 +162,23 @@ export class Tree {
   }
 
   public getLeftMosteUnloadedNode(): TreeNode {
-    let currentNode = this.loadingNode ? this.loadingNode : this.getRootNode();
+    const nodeToLoad = this.getNextNodeToLoad(this.getRootNode());
 
-    currentNode = currentNode.relations[0].toNode;
-    // TODO
-
-    return new TreeNode("");
+    return nodeToLoad;
   }
 
   public getNextNodeToLoad(currentNode: TreeNode): TreeNode {
-    // TODO
-    return new TreeNode("");
+    debugger;
+    if (!currentNode.isLoaded())
+      return currentNode;
+    else if (currentNode.isLeaf())
+      return;
+
+    for (const nextNode of currentNode.relations) {
+      const unloadedNode = this.getNextNodeToLoad(nextNode.toNode);
+      if (unloadedNode)
+        return unloadedNode;
+    }
   }
 }
 
@@ -159,7 +187,7 @@ export class TreeNode {
   relations: Relation[] = [];
   value: any;
   parentNode: TreeNode;
-  isVisited: boolean = false;
+  members: any[] = [];
 
   public constructor(id: string) {
     this.id = id;
@@ -179,12 +207,16 @@ export class TreeNode {
 
   // All a nodes relations are defined in one fragment, so when a node has relations it is loaded
   public isLoaded() {
-    return !!this.relations;
+    return this.members.length > 0;
   }
 
   // Returns true if the node is a root node, this is when it does not have a parent
   public isRootNode() {
-    return !!this.parentNode;
+    return !this.parentNode;
+  }
+
+  public isLeaf() {
+    return !this.relations;
   }
 }
 
