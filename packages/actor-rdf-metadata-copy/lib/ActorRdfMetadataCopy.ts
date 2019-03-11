@@ -40,9 +40,7 @@ export class ActorRdfMetadataCopy extends ActorRdfMetadata {
         quads.push(quad)
       });
 
-      // When the stream has finished,
-      // determine the appropriate metadata graph,
-      // and emit all quads to the appropriate streams.
+      // When the stream has finished, emit all quads to the data and metadata streams.
       action.quads.on('end', () => {
         // End of stream
         quads.push(null);

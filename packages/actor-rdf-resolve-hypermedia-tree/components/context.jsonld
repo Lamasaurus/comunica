@@ -1,0 +1,16 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/componentsjs/^3.0.0/components/context.jsonld",
+    {
+      "npmd": "https://linkedsoftwaredependencies.org/bundles/npm/",
+      "carrht": "npmd:@comunica/actor-rdf-resolve-hypermedia-tree/",
+      "files-carrht": "carrht:^1.0.0/",
+
+      "ActorRdfResolveHypermediaTree": "carrht:Actor/RdfResolveHypermedia/Tree",
+      "subjectUri": "carrht:Actor/RdfResolveHypermedia/Tree/subjectUri",
+      "predicateUri": "carrht:Actor/RdfResolveHypermedia/Tree/predicateUri",
+      "objectUri": "carrht:Actor/RdfResolveHypermedia/Tree/objectUri",
+      "graphUri": "carrht:Actor/RdfResolveHypermedia/Tree/graphUri"
+    }
+  ]
+}

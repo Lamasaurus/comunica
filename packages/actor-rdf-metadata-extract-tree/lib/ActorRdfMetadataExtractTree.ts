@@ -34,11 +34,10 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
       // Forward errors
       action.metadata.on('error', reject);
 
-      // Immediately resolve when a value has been found.
       action.metadata.on('data', (quad) => {
         if (quad.predicate.value === ActorRdfMetadataExtractTree.TYPE && quad.object.value === "https://w3id.org/tree#Node") {
           const nodeId = quad.subject.value;
-          treeConstructor.nodes[nodeId] = new Node(nodeId);
+          treeConstructor.addTreeNode(nodeId);
         } else if (quad.predicate.value === "https://w3id.org/tree#hasChildRelation") {
           const par = quad.subject.value;
           const child = quad.object.value;
@@ -62,9 +61,8 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
         }
       });
 
-      // If no value has been found, assume infinity.
+      // Start constructing the tree
       action.metadata.on('end', () => {
-        debugger;
         const tree = treeConstructor.constructTree();
         resolve({ metadata: { tree } });
       });
@@ -79,14 +77,13 @@ extends IActorArgs<IActionRdfMetadataExtract, IActorTest, IActorRdfMetadataExtra
 }
 
 class TreeConstructor {
-  nodes: {[id: string]: Node} = {};
+  nodes: {[id: string]: TreeNode} = {};
   nodeValues: {[id: string]: any} = {};
   nodeIdMap: {[id: string]: string} = {};
   relations: {[id: string]: string[]} = {};
   relationTypes: {[id: string]: string} = {};
 
   public constructTree() {
-    debugger;
     // Put all relations in place
     for (const fromNodeId in this.relations) {
       for (const blankNodeId of this.relations[fromNodeId]) {
@@ -103,15 +100,66 @@ class TreeConstructor {
     for (const node of Object.keys(this.nodes))
       this.nodes[node].setValue(this.nodeValues[node]);
 
-    return this.nodes;
+    return new Tree(this.nodes);
+  }
+
+  public addTreeNode(nodeId: string) {
+    if (!(nodeId in this.nodes))
+      this.nodes[nodeId] = new TreeNode(nodeId);
   }
 }
 
-export class Node {
+export class Tree {
+  nodes: {[id: string]: TreeNode} = {};
+  loadingNode: TreeNode;
+
+  constructor(nodes: {[id: string]: TreeNode}) {
+    this.nodes = nodes;
+  }
+
+  public combineWithTree(tree: Tree) {
+    const otherTreeNodes = tree.nodes;
+
+    Object.keys(otherTreeNodes).forEach((nodeId) => {
+      // If the new node has been loaded, save that one
+      if (nodeId in this.nodes && otherTreeNodes[nodeId].isLoaded())
+        this.nodes[nodeId] = otherTreeNodes[nodeId];
+      else if (!(nodeId in this.nodes))
+        this.nodes[nodeId] = otherTreeNodes[nodeId];
+    });
+  }
+
+  public containsNodes() {
+    return Object.keys(this.nodes).length != 0;
+  }
+
+  public getRootNode() {
+    for (const node of Object.values(this.nodes))
+      if (node.isRootNode())
+        return node;
+  }
+
+  public getLeftMosteUnloadedNode(): TreeNode {
+    let currentNode = this.loadingNode ? this.loadingNode : this.getRootNode();
+
+    currentNode = currentNode.relations[0].toNode;
+    // TODO
+
+    return new TreeNode("");
+  }
+
+  public getNextNodeToLoad(currentNode: TreeNode): TreeNode {
+    // TODO
+    return new TreeNode("");
+  }
+}
+
+export class TreeNode {
   id: string;
   relations: Relation[] = [];
   value: any;
-  parentNode: Node;
+  parentNode: TreeNode;
+  isVisited: boolean = false;
 
   public constructor(id: string) {
     this.id = id;
@@ -121,22 +169,32 @@ export class Node {
     this.relations.push(relation);
   }
 
-  public setParent(parentNode: Node) {
+  public setParent(parentNode: TreeNode) {
     this.parentNode = parentNode;
   }
 
   public setValue(value: any){
     this.value = value;
   }
+
+  // All a nodes relations are defined in one fragment, so when a node has relations it is loaded
+  public isLoaded() {
+    return !!this.relations;
+  }
+
+  // Returns true if the node is a root node, this is when it does not have a parent
+  public isRootNode() {
+    return !!this.parentNode;
+  }
 }
 
 export class Relation {
   id: string;
-  fromNode: Node;
-  toNode: Node;
+  fromNode: TreeNode;
+  toNode: TreeNode;
   relationType: string;
 
-  constructor (id: string, fromNode: Node, toNode: Node, relationType: string) {
+  constructor (id: string, fromNode: TreeNode, toNode: TreeNode, relationType: string) {
     this.id = id;
     this.fromNode = fromNode;
     this.toNode = toNode;
