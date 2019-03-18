@@ -2,14 +2,9 @@ import {ISearchForms} from "@comunica/actor-rdf-metadata-extract-hydra-controls"
 import {ActorRdfResolveHypermedia, IActionRdfResolveHypermedia,
   IActorRdfResolveHypermediaOutput} from "@comunica/bus-rdf-resolve-hypermedia";
 import {KEY_CONTEXT_SOURCE} from "@comunica/bus-rdf-resolve-quad-pattern";
+import {KEY_CONTEXT_TREE} from "@comunica/actor-rdf-metadata-tree";
 import {ActionContext, IActorArgs, IActorTest} from "@comunica/core";
 import {Tree, TreeNode} from "@comunica/actor-rdf-metadata-extract-tree";
-
-/**
- * @type {string} Nodes of a tree
- * @value {{[id: sting]: Node}}
- */
-export const KEY_CONTEXT_TREE: string = "comunica/actor-rdf-resolve-hypermedia-tree:tree";
 
 /**
  * A comunica QPF RDF Resolve Quad Pattern Actor.
@@ -33,7 +28,8 @@ implements IActorRdfResolveHypermediaTreeArgs {
         + ' requires a single source with a Hypermedia \'hypermedia\' entrypoint to be present in the context.');
     }
 
-    if (!action.metadata || !action.metadata.tree || !action.metadata.tree.containsNodes()) {
+    const tree: Tree = action.context.get(KEY_CONTEXT_TREE);
+    if (!tree || !tree.containsNodes()) {
       throw new Error(`${this.name} requires metadata and tree to work on.`);
     }
 
@@ -47,27 +43,20 @@ implements IActorRdfResolveHypermediaTreeArgs {
    */
   public async run(action: IActionRdfResolveHypermedia):
   Promise<IActorRdfResolveHypermediaOutput> {
-    // Get the old tree
-    if (!action.context.get(KEY_CONTEXT_TREE))
-      action.context = action.context.set(KEY_CONTEXT_TREE, new Tree({})); 
-    const tree = action.context.get(KEY_CONTEXT_TREE);
-
-    // Get the new tree and combine it with the old one
-    const newTree: Tree = action.metadata.tree;
-    tree.combineWithTree(newTree);
-
-    // Set the tree in the context
-    action.context = action.context.set(KEY_CONTEXT_TREE, tree);
+    debugger;
 
     return {
       searchForm: {
         template: null,
         mappings: null,
         getUri: (entries: {[id: string]: string}): string => {
+          /*
           const tree: Tree = action.context.get(KEY_CONTEXT_TREE);
           const nextNode: TreeNode = tree.getLeftMosteUnloadedNode();
-          
+
           return nextNode.id;
+           */
+          return action.context.get(KEY_CONTEXT_SOURCE).value;
         }
       }
     }

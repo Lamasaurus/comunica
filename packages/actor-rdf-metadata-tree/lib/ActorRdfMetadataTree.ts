@@ -1,8 +1,11 @@
 import {ActorRdfMetadata, IActionRdfMetadata, IActorRdfMetadataOutput} from "@comunica/bus-rdf-metadata";
+import {KEY_CONTEXT_SOURCE} from "@comunica/bus-rdf-resolve-quad-pattern";
 import {IActorArgs, IActorTest} from "@comunica/core";
 import * as RDF from "rdf-js";
 import {Readable} from "stream";
 import {TreeConstructor, Tree, TreeNode, Relation} from "@comunica/actor-rdf-metadata-extract-tree";
+
+export const KEY_CONTEXT_TREE: string = "comunica/actor-rdf-resolve-hypermedia-tree:tree";
 
 /**
  * An RDF Metadata Actor that copies all quads in data and metadata
@@ -49,8 +52,10 @@ export class ActorRdfMetadataTree extends ActorRdfMetadata {
         metadata.emit('error', error);
       });
 
-      const quads: RDF.Quad[] = [];
+      const metadataQuads: RDF.Quad[] = [];
       action.quads.on('data', (quad) => {
+        let isData = false;
+
         if (quad.predicate.value === ActorRdfMetadataTree.TYPE && quad.object.value === "https://w3id.org/tree#Node") {
           const nodeId = quad.subject.value;
           treeConstructor.addTreeNode(nodeId);
@@ -81,19 +86,50 @@ export class ActorRdfMetadataTree extends ActorRdfMetadata {
           else
             treeConstructor.treeMembers[nodeId] = [quad.object.value];
         } else {
-          treeConstructor.potentialData[quad.subject.value] = quad;
+          const subject = quad.subject.value;
+          if (subject in treeConstructor.potentialData)
+            treeConstructor.potentialData[subject].push(quad);
+          else
+            treeConstructor.potentialData[subject] = [quad];
+
+          isData = true;
+
+        }
+
+        if (!isData) {
+          metadataQuads.push(quad);
         }
       });
 
       // When the stream has finished, emit all quads to the data and metadata streams.
       action.quads.on('end', () => {
-        const tree = treeConstructor.constructTree();
+        debugger;
+        const newTree: Tree = treeConstructor.constructTree();
+
+        // Get the old tree
+        if (!action.context.get(KEY_CONTEXT_TREE))
+          action.context = action.context.set(KEY_CONTEXT_TREE, new Tree({})); 
+        const tree: Tree = action.context.get(KEY_CONTEXT_TREE);
+
+        // Get the new tree and combine it with the old one
+        tree.combineWithTree(newTree);
+
+        // Set the tree in the context
+        action.context = action.context.set(KEY_CONTEXT_TREE, tree);
+
+        const baseURI = action.context.get(KEY_CONTEXT_SOURCE).value;
+        const dataMembers = tree.nodes[baseURI].members;
+
         // End of stream
-        quads.push(null);
-        quads.forEach(quad => {
+        dataMembers.forEach(quad => {
           data.push(quad);
-          metadata.push(quad);
         });
+        data.push(null);
+
+        metadataQuads.forEach(quad => {
+          metadata.push(quad);
+        })
+        metadata.push(null);
       });
     };
     data._read = metadata._read = () => { attachListeners(); };

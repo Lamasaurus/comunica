@@ -25,7 +25,6 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
   }
 
   public async test(action: IActionRdfMetadataExtract): Promise<IActorTest> {
-    throw new Error('This actor is disabled.');
     return true;
   }
 
@@ -101,12 +100,10 @@ export class TreeConstructor {
       }
     }
 
-    debugger;
-    for (const nodeId in this.treeMembers) {
-      for (const member of this.treeMembers[nodeId]) {
-        this.nodes[nodeId].members.push(this.loadData(member));
-      }
-    }
+    // Add the members to the nodes
+    for (const nodeId in this.treeMembers)
+      for (const member of this.treeMembers[nodeId])
+        this.nodes[nodeId].addMembers(this.loadData(member));
 
     // Add values to the nodes
     for (const node of Object.keys(this.nodes))
@@ -120,14 +117,16 @@ export class TreeConstructor {
       this.nodes[nodeId] = new TreeNode(nodeId);
   }
 
-  private loadData(subjectId: string) {
-    const data = this.potentialData[subjectId];
+  private loadData(subjectId: string): any[] {
+    const data = subjectId in this.potentialData ? this.potentialData[subjectId] : [];
+    // Make a copy of the list
+    let returnData = [].concat(data);
 
-    for (const quad of data) {
-      data.push(this.loadData(quad.object.value));
-    }
+    // Look recursively for other quads that belong to members
+    for (const quad of data)
+      returnData = returnData.concat(this.loadData(quad.object.value));
 
-    return data;
+    return returnData;
   }
 }
 
@@ -217,6 +216,10 @@ export class TreeNode {
 
   public isLeaf() {
     return !this.relations;
+  }
+
+  public addMembers(members: any[]) {
+    this.members = this.members.concat(members);
   }
 }
 

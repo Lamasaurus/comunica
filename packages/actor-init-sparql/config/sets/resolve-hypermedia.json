@@ -95,10 +95,6 @@
     {
       "@id": "config-sets:resolve-hypermedia.json#myRdfMetadataExtractHydraCount",
       "@type": "ActorRdfMetadataExtractHydraCount"
-    },
-    {
-      "@id": "config-sets:resolve-hypermedia.json#myRdfMetadataExtractTree",
-      "@type": "ActorRdfMetadataExtractTree"
     }
   ]
 }

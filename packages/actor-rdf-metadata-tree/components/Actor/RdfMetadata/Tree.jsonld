@@ -1,16 +1,16 @@
 {
   "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-copy/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-tree/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-metadata/^1.0.0/components/context.jsonld"
   ],
-  "@id": "npmd:@comunica/actor-rdf-metadata-copy",
+  "@id": "npmd:@comunica/actor-rdf-metadata-tree",
   "components": [
     {
-      "@id": "carmc:Actor/RdfMetadata/Copy",
+      "@id": "carmt:Actor/RdfMetadata/Tree",
       "@type": "Class",
       "extends": "cbrm:Actor/RdfMetadata",
-      "requireElement": "ActorRdfMetadataCopy",
-      "comment": "A comunica Copy RDF Metadata Actor.",
+      "requireElement": "ActorRdfMetadataTree",
+      "comment": "A comunica Tree RDF Metadata Actor.",
       "constructorArguments": [
         {
           "extends": "cbrm:Actor/RdfMetadata/constructorArgumentsObject"
