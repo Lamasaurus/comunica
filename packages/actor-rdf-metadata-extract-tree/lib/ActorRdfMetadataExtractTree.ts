@@ -2,6 +2,7 @@ import {ActorRdfMetadataExtract, IActionRdfMetadataExtract,
   IActorRdfMetadataExtractOutput} from "@comunica/bus-rdf-metadata-extract";
 import {IActorArgs, IActorTest} from "@comunica/core";
 
+
 /**
  * An RDF Metadata Extract Actor that extracts total items counts from a metadata stream based on the given predicates.
  */
@@ -59,14 +60,29 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
           const relationType = quad.object.value;
           treeConstructor.relationTypes[blankNodeId] = relationType;
         } else if (quad.predicate.value === "http://www.w3.org/ns/hydra/core#member") {
-          debugger;
+          const nodeId = quad.subject.value;
+          if (nodeId in treeConstructor.treeMembers)
+            treeConstructor.treeMembers[nodeId].push(quad.object.value);
+          else
+            treeConstructor.treeMembers[nodeId] = [quad.object.value];
+        } else {
+          // Some data is not directly a member
+          const subject = quad.subject.value;
+          if (subject in treeConstructor.potentialData)
+            treeConstructor.potentialData[subject].push(quad);
+          else
+            treeConstructor.potentialData[subject] = [quad];
         }
       });
 
       // Start constructing the tree
       action.metadata.on('end', () => {
         const tree = treeConstructor.constructTree();
-        resolve({ metadata: { tree } });
+
+        if (tree)
+          resolve({ metadata: { tree } });
+        else
+          resolve({ metadata: {} });
       });
     });
   }
@@ -88,15 +104,16 @@ export class TreeConstructor {
   potentialData: {[id: string]: any[]} = {};
 
   public constructTree() {
+    if (Object.keys(this.nodes).length == 0)
+      return; 
+
     // Put all relations in place
     for (const fromNodeId in this.relations) {
       for (const blankNodeId of this.relations[fromNodeId]) {
-        const fromNode = this.nodes[fromNodeId];
-        const toNode = this.nodes[this.nodeIdMap[blankNodeId]];
+        const toNodeId = this.nodeIdMap[blankNodeId];
         const relationType = this.relationTypes[blankNodeId]  
-        const relation = new Relation(blankNodeId, fromNode, toNode, relationType);
-        fromNode.addRelation(relation);
-        toNode.setParent(fromNode);
+        const relation = new Relation(blankNodeId, fromNodeId, toNodeId, relationType);
+        this.nodes[fromNodeId].addRelation(relation);
       }
     }
 
@@ -143,7 +160,7 @@ export class Tree {
 
     Object.keys(otherTreeNodes).forEach((nodeId) => {
       // If the new node has been loaded, save that one
-      if (nodeId in this.nodes && otherTreeNodes[nodeId].isLoaded())
+      if (nodeId in this.nodes && !this.nodes[nodeId].isLoaded() && otherTreeNodes[nodeId].isLoaded())
         this.nodes[nodeId] = otherTreeNodes[nodeId];
       else if (!(nodeId in this.nodes))
         this.nodes[nodeId] = otherTreeNodes[nodeId];
@@ -159,26 +176,6 @@ export class Tree {
       if (node.isRootNode())
         return node;
   }
-
-  public getLeftMosteUnloadedNode(): TreeNode {
-    const nodeToLoad = this.getNextNodeToLoad(this.getRootNode());
-
-    return nodeToLoad;
-  }
-
-  public getNextNodeToLoad(currentNode: TreeNode): TreeNode {
-    debugger;
-    if (!currentNode.isLoaded())
-      return currentNode;
-    else if (currentNode.isLeaf())
-      return;
-
-    for (const nextNode of currentNode.relations) {
-      const unloadedNode = this.getNextNodeToLoad(nextNode.toNode);
-      if (unloadedNode)
-        return unloadedNode;
-    }
-  }
 }
 
 export class TreeNode {
@@ -186,7 +183,8 @@ export class TreeNode {
   relations: Relation[] = [];
   value: any;
   parentNode: TreeNode;
-  members: any[] = [];
+  members: any[];
+  visited: boolean = false;
 
   public constructor(id: string) {
     this.id = id;
@@ -206,7 +204,7 @@ export class TreeNode {
 
   // All a nodes relations are defined in one fragment, so when a node has relations it is loaded
   public isLoaded() {
-    return this.members.length > 0;
+    return !!this.members;
   }
 
   // Returns true if the node is a root node, this is when it does not have a parent
@@ -214,22 +212,25 @@ export class TreeNode {
     return !this.parentNode;
   }
 
-  public isLeaf() {
-    return !this.relations;
+  public isLeafNode() {
+    return this.relations.length == 0; 
   }
 
   public addMembers(members: any[]) {
+    if (!this.members)
+      this.members = [];
+
     this.members = this.members.concat(members);
   }
 }
 
 export class Relation {
   id: string;
-  fromNode: TreeNode;
-  toNode: TreeNode;
+  fromNode: string;
+  toNode: string;
   relationType: string;
 
-  constructor (id: string, fromNode: TreeNode, toNode: TreeNode, relationType: string) {
+  constructor (id: string, fromNode: string, toNode: string, relationType: string) {
     this.id = id;
     this.fromNode = fromNode;
     this.toNode = toNode;

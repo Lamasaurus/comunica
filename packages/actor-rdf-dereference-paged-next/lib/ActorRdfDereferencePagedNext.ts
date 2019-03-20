@@ -7,6 +7,9 @@ import {IActionRdfMetadataExtract, IActorRdfMetadataExtractOutput} from "@comuni
 import {Actor, IActorArgs, IActorTest, Mediator} from "@comunica/core";
 import * as LRUCache from "lru-cache";
 import {MediatedPagedAsyncRdfIterator} from "./MediatedPagedAsyncRdfIterator";
+import {MediatedTreeAsyncRdfIterator} from "./MediatedTreeAsyncRdfIterator";
+import {BufferedIterator, BufferedIteratorOptions} from "asynciterator";
+import * as RDF from "rdf-js";
 
 /**
  * An RDF Dereference Paged Actor that will lazily follow 'next' links as defined from the extracted metadata.
@@ -56,16 +59,16 @@ export class ActorRdfDereferencePagedNext extends ActorRdfDereferencePaged imple
    * @return {Promise<IActorRdfDereferencePagedOutput>} A cloned output promise.
    */
   protected async cloneOutput(outputPromise: Promise<IActorRdfDereferencePagedOutput>)
-  : Promise<IActorRdfDereferencePagedOutput> {
-    const output: IActorRdfDereferencePagedOutput = await outputPromise;
-    return {
-      data: output.data.clone(),
-      firstPageMetadata: () => output.firstPageMetadata().then(
-        (metadata: {[id: string]: any}) => Object.assign({}, metadata)),
-      firstPageUrl: output.firstPageUrl,
-      triples: output.triples,
-    };
-  }
+    : Promise<IActorRdfDereferencePagedOutput> {
+      const output: IActorRdfDereferencePagedOutput = await outputPromise;
+      return {
+        data: output.data.clone(),
+        firstPageMetadata: () => output.firstPageMetadata().then(
+          (metadata: {[id: string]: any}) => Object.assign({}, metadata)),
+        firstPageUrl: output.firstPageUrl,
+        triples: output.triples,
+      };
+    }
 
   /**
    * Actual logic to produce the paged output.
@@ -77,7 +80,7 @@ export class ActorRdfDereferencePagedNext extends ActorRdfDereferencePaged imple
     const firstPageUrl: string = firstPage.pageUrl;
 
     const firstPageMetaSplit: IActorRdfMetadataOutput = await this.mediatorMetadata
-      .mediate({ context: action.context, pageUrl: firstPageUrl, quads: firstPage.quads, triples: firstPage.triples });
+    .mediate({ context: action.context, pageUrl: firstPageUrl, quads: firstPage.quads, triples: firstPage.triples });
     let materializedFirstPageMetadata: Promise<{[id: string]: any}> = null;
     const firstPageMetadata: () => Promise<{[id: string]: any}> = () => {
       return materializedFirstPageMetadata || (materializedFirstPageMetadata = this.mediatorMetadataExtract.mediate(
@@ -85,22 +88,32 @@ export class ActorRdfDereferencePagedNext extends ActorRdfDereferencePaged imple
         .then((output) => output.metadata));
     };
 
-    const data: MediatedPagedAsyncRdfIterator = new MediatedPagedAsyncRdfIterator(firstPageUrl, firstPageMetaSplit.data,
-      firstPageMetadata, this.mediatorRdfDereference, this.mediatorMetadata, this.mediatorMetadataExtract,
-      action.context);
+    const metadata = (await firstPageMetadata());
+    let data: BufferedIterator<RDF.Quad>;
+
+    if ('tree' in metadata) {
+      data = new MediatedTreeAsyncRdfIterator(firstPageUrl, firstPageMetaSplit.data,
+        firstPageMetadata, this.mediatorRdfDereference, this.mediatorMetadata, this.mediatorMetadataExtract,
+        action.context);
+    } else {
+      data = new MediatedPagedAsyncRdfIterator(firstPageUrl, firstPageMetaSplit.data,
+        firstPageMetadata, this.mediatorRdfDereference, this.mediatorMetadata, this.mediatorMetadataExtract,
+        action.context);
+    }
+
     return { firstPageUrl, data, firstPageMetadata, triples: firstPage.triples };
   }
 
 }
 
 export interface IActorRdfDereferencePaged extends
-  IActorArgs<IActionRdfDereferencePaged, IActorTest, IActorRdfDereferencePagedOutput> {
+IActorArgs<IActionRdfDereferencePaged, IActorTest, IActorRdfDereferencePagedOutput> {
   mediatorRdfDereference: Mediator<Actor<IActionRdfDereference, IActorTest, IActorRdfDereferenceOutput>,
-    IActionRdfDereference, IActorTest, IActorRdfDereferenceOutput>;
+  IActionRdfDereference, IActorTest, IActorRdfDereferenceOutput>;
   mediatorMetadata: Mediator<Actor<IActionRdfMetadata, IActorTest, IActorRdfMetadataOutput>,
-    IActionRdfMetadata, IActorTest, IActorRdfMetadataOutput>;
+  IActionRdfMetadata, IActorTest, IActorRdfMetadataOutput>;
   mediatorMetadataExtract: Mediator<Actor<IActionRdfMetadataExtract, IActorTest, IActorRdfMetadataExtractOutput>,
-    IActionRdfMetadataExtract, IActorTest, IActorRdfMetadataExtractOutput>;
+  IActionRdfMetadataExtract, IActorTest, IActorRdfMetadataExtractOutput>;
   cacheSize: number;
   httpInvalidator: ActorHttpInvalidateListenable;
 }
