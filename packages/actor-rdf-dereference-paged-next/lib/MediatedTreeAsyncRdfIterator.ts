@@ -91,7 +91,10 @@ export class MediatedTreeAsyncRdfIterator extends TreeAsyncRdfIterator {
       next = node.id;
     } else {
 
-      members = node.members;
+      if (!node.membersArePushed) {
+        node.membersArePushed = true;
+        members = node.members;
+      }
 
       if(node.isLeafNode()){
         next = this.parentQueque.pop();
