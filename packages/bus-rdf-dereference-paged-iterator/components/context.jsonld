@@ -1,0 +1,12 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/core/^1.0.0/components/context.jsonld",
+    {
+      "cbrdpi": "npmd:@comunica/bus-rdf-dereference-paged-iterator/",
+      "files-cbrdpi": "cbrdpi:^1.0.0/",
+
+      "BusRdfDereferencePagedIterator": "cbrdpi:Bus/RdfDereferencePagedIterator",
+      "ActorRdfDereferencePagedIterator": "cbrdpi:Actor/RdfDereferencePagedIterator"
+    }
+  ]
+}

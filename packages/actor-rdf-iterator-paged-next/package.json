@@ -1,0 +1,82 @@
+{
+  "name": "@comunica/actor-rdf-iterator-paged-next",
+  "version": "1.6.3",
+  "description": "A hydra rdf-dereference-paged actor",
+  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-paged-next",
+  "lsd:components": "components/components.jsonld",
+  "lsd:contexts": {
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-paged-next/^1.0.0/components/context.jsonld": "components/context.jsonld"
+  },
+  "lsd:importPaths": {
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-paged-next/^1.0.0/components/": "components/"
+  },
+  "main": "index.js",
+  "typings": "index",
+  "repository": "https://github.com/comunica/comunica/tree/master/packages/actor-rdf-iterator-paged-next",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "comunica",
+    "actor",
+    "rdf-dereference-paged",
+    "hypermedia",
+    "next",
+    "paged"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/comunica/comunica/issues"
+  },
+  "homepage": "https://github.com/comunica/comunica#readme",
+  "files": [
+    "components",
+    "lib/**/*.d.ts",
+    "lib/**/*.js",
+    "index.d.ts",
+    "index.js"
+  ],
+  "dependencies": {
+    "asynciterator": "^2.0.1",
+    "lru-cache": "^5.1.1"
+  },
+  "peerDependencies": {
+    "@comunica/bus-http-invalidate": "^1.0.0",
+    "@comunica/bus-rdf-dereference": "^1.0.0",
+    "@comunica/bus-rdf-dereference-paged": "^1.0.0",
+    "@comunica/bus-rdf-metadata": "^1.0.0",
+    "@comunica/bus-rdf-metadata-extract": "^1.0.0",
+    "@comunica/core": "^1.0.0"
+  },
+  "devDependencies": {
+    "@comunica/bus-http-invalidate": "^1.6.3",
+    "@comunica/bus-rdf-dereference": "^1.6.3",
+    "@comunica/bus-rdf-dereference-paged": "^1.6.3",
+    "@comunica/bus-rdf-metadata": "^1.6.3",
+    "@comunica/bus-rdf-metadata-extract": "^1.6.3",
+    "@comunica/core": "^1.6.3"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "test/tsconfig.json"
+      }
+    },
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "collectCoverage": true
+  },
+  "scripts": {
+    "test": "node \"../../node_modules/jest/bin/jest.js\" ${1}",
+    "test-watch": "node \"../../node_modules/jest/bin/jest.js\" ${1} --watch",
+    "lint": "node \"../../node_modules/tslint/bin/tslint\" lib/**/*.ts test/**/*.ts --exclude '**/*.d.ts'",
+    "build": "node \"../../node_modules/typescript/bin/tsc\"",
+    "validate": "npm ls"
+  }
+}

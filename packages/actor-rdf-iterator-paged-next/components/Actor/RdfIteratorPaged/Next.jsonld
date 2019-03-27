@@ -1,0 +1,22 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-paged-next/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged-iterator/^1.0.0/components/context.jsonld"
+  ],
+  "@id": "npmd:@comunica/actor-rdf-iterator-paged-next",
+  "components": [
+    {
+      "@id": "caripn:Actor/RdfIteratorPaged/Next",
+      "@type": "Class",
+      "extends": "cbrdpi:Actor/RdfDereferencePagedIterator",
+      "requireElement": "ActorRdfIteratorPagedNext",
+      "comment": "A comunica RDF Dereference Hypdermedia Actor.",
+      "constructorArguments": [
+        {
+          "@id": "caripn:Actor/RdfIteratorPaged/constructorArgumentsObject",
+          "extends": "cbrdpi:Actor/RdfDereferencePagedIterator/constructorArgumentsObject"
+        }
+      ]
+    }
+  ]
+}

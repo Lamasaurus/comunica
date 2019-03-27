@@ -1,6 +1,7 @@
 import {ActorRdfMetadataExtract, IActionRdfMetadataExtract,
   IActorRdfMetadataExtractOutput} from "@comunica/bus-rdf-metadata-extract";
 import {IActorArgs, IActorTest} from "@comunica/core";
+import * as RDF from "rdf-js";
 
 
 /**
@@ -39,39 +40,36 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract impleme
         if (quad.predicate.value === ActorRdfMetadataExtractTree.TYPE && quad.object.value === "https://w3id.org/tree#Node") {
           const nodeId = quad.subject.value;
           treeConstructor.addTreeNode(nodeId);
+
         } else if (quad.predicate.value === "https://w3id.org/tree#hasChildRelation") {
           const par = quad.subject.value;
           const child = quad.object.value;
+          treeConstructor.addRelation(par, child);
 
-          if (treeConstructor.relations[par])
-            treeConstructor.relations[par].push(child);
-          else
-            treeConstructor.relations[par] = [child];
         } else if (quad.predicate.value === "https://w3id.org/tree#child") {
           const nodeId = quad.object.value;
           const blankId = quad.subject.value;
-          treeConstructor.nodeIdMap[blankId] = nodeId;
+          treeConstructor.addNodeToNodeMap(blankId, nodeId);
+
         } else if (quad.predicate.value === "https://w3id.org/tree#value") {
           const nodeId = quad.subject.value;
           const value = quad.object.value;
           treeConstructor.nodeValues[nodeId] = value;
+
         } else if (quad.predicate.value === ActorRdfMetadataExtractTree.TYPE && ActorRdfMetadataExtractTree.RELATIONAL_TYPES.includes(quad.object.value )) {
           const blankNodeId = quad.subject.value;
           const relationType = quad.object.value;
-          treeConstructor.relationTypes[blankNodeId] = relationType;
+          treeConstructor.addRelationType(blankNodeId, relationType);
+
         } else if (quad.predicate.value === "http://www.w3.org/ns/hydra/core#member") {
           const nodeId = quad.subject.value;
-          if (nodeId in treeConstructor.treeMembers)
-            treeConstructor.treeMembers[nodeId].push(quad.object.value);
-          else
-            treeConstructor.treeMembers[nodeId] = [quad.object.value];
+          const blankNodeId = quad.object.value;
+          treeConstructor.addMember(nodeId, blankNodeId);
+
         } else {
           // Some data is not directly a member
           const subject = quad.subject.value;
-          if (subject in treeConstructor.potentialData)
-            treeConstructor.potentialData[subject].push(quad);
-          else
-            treeConstructor.potentialData[subject] = [quad];
+          treeConstructor.addPotentialData(subject, quad);
         }
       });
 
@@ -129,6 +127,33 @@ export class TreeConstructor {
     return new Tree(this.nodes);
   }
 
+  public addPotentialData(subject: string, quad: RDF.Quad) {
+    this.addToDictList(this.potentialData, subject, quad);
+  }
+
+  public addMember(nodeId: string, blankNodeId: string) {
+    this.addToDictList(this.treeMembers, nodeId, blankNodeId);
+  }
+
+  public addRelation(par: string, child: string) {
+    this.addToDictList(this.relations, par, child);
+  }
+
+  private addToDictList(list: any, key: any, value: any) {
+    if (list[key])
+      list[key].push(value);
+    else
+      list[key] = [value];
+  }
+
+  public addNodeToNodeMap(blankNodeId: string, nodeId: string) {
+    this.nodeIdMap[blankNodeId] = nodeId;
+  }
+
+  public addRelationType(blankNodeId: string, relationType: string) {
+    this.relationTypes[blankNodeId] = relationType;
+  }
+
   public addTreeNode(nodeId: string) {
     if (!(nodeId in this.nodes))
       this.nodes[nodeId] = new TreeNode(nodeId);
@@ -176,6 +201,10 @@ export class Tree {
       if (node.isRootNode())
         return node;
   }
+
+  public getNodeById(nodeId: string): TreeNode {
+    return this.nodes[nodeId];
+  }
 }
 
 export class TreeNode {
@@ -184,7 +213,8 @@ export class TreeNode {
   value: any;
   parentNode: TreeNode;
   members: any[];
-  visited: boolean = false;
+  isVisited: boolean = false;
+  membersPushed: boolean = false;
 
   public constructor(id: string) {
     this.id = id;

@@ -3,13 +3,14 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/componentsjs/^3.0.0/components/context.jsonld",
     {
       "npmd": "https://linkedsoftwaredependencies.org/bundles/npm/",
-      "cardph": "npmd:@comunica/actor-rdf-dereference-paged-next/",
+      "cardph": "npmd:@comunica/actor-rdf-dereference-paged-hypermedia/",
       "files-cardph": "cardph:^1.0.0/",
 
-      "ActorRdfDereferencePagedNext": "cardph:Actor/RdfDereferencePaged/Next",
+      "ActorRdfDereferencePagedHypermedia": "cardph:Actor/RdfDereferencePaged/Hypermedia",
       "mediatorRdfDereference": "cardph:mediatorRdfDereference",
       "mediatorMetadata": "cardph:mediatorMetadata",
-      "mediatorMetadataExtract": "cardph:mediatorMetadataExtract"
+      "mediatorMetadataExtract": "cardph:mediatorMetadataExtract",
+      "mediatorDereferencePagedIterator": "cardph:mediatorDereferencePagedIterator"
     }
   ]
 }

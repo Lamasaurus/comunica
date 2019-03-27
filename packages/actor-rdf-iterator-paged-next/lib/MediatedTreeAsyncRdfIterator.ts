@@ -80,7 +80,7 @@ export class MediatedTreeAsyncRdfIterator extends TreeAsyncRdfIterator {
         .mediate({ context: this.context, pageUrl: pageQuads.pageUrl, metadata: pageMetaSplit.metadata });
 
       tree = this.combineTrees(metaData.metadata.tree);
-      node = tree.nodes[nodeId];
+      node = tree.getNodeById(nodeId);
     }
 
 
@@ -91,23 +91,23 @@ export class MediatedTreeAsyncRdfIterator extends TreeAsyncRdfIterator {
       next = node.id;
     } else {
 
-      if (!node.membersArePushed) {
-        node.membersArePushed = true;
+      if (!node.membersPushed) {
+        node.membersPushed = true;
         members = node.members;
       }
 
       if(node.isLeafNode()){
         next = this.parentQueque.pop();
-        node.visited = true;
+        node.isVisited = true;
       } else {
-        let unvisitedNodes = node.relations.filter((relation) => !tree.nodes[relation.toNode].visited);
+        let unvisitedNodes = node.relations.filter((relation) => !tree.getNodeById(relation.toNode).isVisited);
 
         if(unvisitedNodes.length > 0){
           this.parentQueque.push(nodeId);
           next = unvisitedNodes[0].toNode;
         }
         else {
-          node.visited = true;
+          node.isVisited = true;
           next = this.parentQueque.pop();
         }
       }

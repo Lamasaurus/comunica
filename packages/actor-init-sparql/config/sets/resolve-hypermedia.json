@@ -12,14 +12,14 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-copy/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-metadata-triple-predicate/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged/^1.0.0/components/context.jsonld",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-next/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-hypermedia/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-paged-next/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-resolve-quad-pattern-hypermedia/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-resolve-hypermedia-qpf/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-resolve-hypermedia-tree/^1.0.0/components/context.jsonld",
-
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged-iterator/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-resolve-hypermedia/^1.0.0/components/context.jsonld",
-
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/mediator-combine-union/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/mediator-race/^1.0.0/components/context.jsonld"
   ],
@@ -50,8 +50,8 @@
     },
 
     {
-      "@id": "config-sets:resolve-hypermedia.json#myRdfPagedDereferencer",
-      "@type": "ActorRdfDereferencePagedNext",
+      "@id": "config-sets:resolve-hypermedia.json#myRdfDereferencerPagedHypermedia",
+      "@type": "ActorRdfDereferencePagedHypermedia",
       "cardph:mediatorRdfDereference": {
         "@id": "config-sets:resolve-hypermedia.json#mediatorRdfDereference",
         "@type": "MediatorRace",
@@ -67,7 +67,17 @@
         "@type": "MediatorCombineUnion",
         "cc:Mediator/bus": { "@id": "cbrme:Bus/RdfMetadataExtract" },
         "cmcu:Mediator/CombineUnion/field": "metadata"
+      },
+      "cardph:mediatorDereferencePagedIterator": {
+        "@id": "config-sets:resolve-hypermedia.json#mediatorDereferencePagedIterator",
+        "@type": "MediatorRace",
+        "cc:Mediator/bus": { "@id": "cbrdpi:Bus/RdfDereferencePagedIterator" }
       }
+    },
+
+    {
+      "@id": "config-sets:resolve-hypermedia.json#myRdfIteratorPagedNext",
+      "@type": "ActorRdfIteratorPagedNext"
     },
 
     {

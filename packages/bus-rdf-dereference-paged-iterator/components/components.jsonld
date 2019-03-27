@@ -1,0 +1,10 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged-iterator/^1.0.0/components/context.jsonld",
+  "@id": "npmd:@comunica/bus-rdf-dereference-paged-iterator",
+  "@type": "Module",
+  "requireName": "@comunica/bus-rdf-dereference-paged-iterator",
+  "import": [
+    "files-cbrdpi:components/Bus/RdfDereferencePagedIterator.jsonld",
+    "files-cbrdpi:components/Actor/RdfDereferencePagedIterator.jsonld"
+  ]
+}

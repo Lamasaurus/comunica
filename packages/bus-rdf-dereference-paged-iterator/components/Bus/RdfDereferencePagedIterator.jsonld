@@ -1,0 +1,6 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged-iterator/^1.0.0/components/context.jsonld",
+  "@id": "cbrdpi:Bus/RdfDereferencePagedIterator",
+  "@type": "cc:Bus",
+  "comment": "A comunica bus for rdf-dereference-paged iterator events."
+}

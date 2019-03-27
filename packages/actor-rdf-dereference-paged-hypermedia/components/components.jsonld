@@ -1,0 +1,9 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-hypermedia/^1.0.0/components/context.jsonld",
+  "@id": "npmd:@comunica/actor-rdf-dereference-paged-hypermedia",
+  "@type": "Module",
+  "requireName": "@comunica/actor-rdf-dereference-paged-hypermedia",
+  "import": [
+    "files-cardph:components/Actor/RdfDereferencePaged/Hypermedia.jsonld"
+  ]
+}

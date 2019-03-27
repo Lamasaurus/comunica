@@ -1,0 +1,12 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/componentsjs/^3.0.0/components/context.jsonld",
+    {
+      "npmd": "https://linkedsoftwaredependencies.org/bundles/npm/",
+      "caripn": "npmd:@comunica/actor-rdf-iterator-paged-next/",
+      "files-caripn": "caripn:^1.0.0/",
+
+      "ActorRdfIteratorPagedNext": "caripn:Actor/RdfIteratorPaged/Next"
+    }
+  ]
+}
