@@ -1,9 +1,8 @@
-import {ISearchForms} from "@comunica/actor-rdf-metadata-extract-hydra-controls";
+import {Tree} from "@comunica/actor-rdf-metadata-extract-tree";
 import {ActorRdfResolveHypermedia, IActionRdfResolveHypermedia,
   IActorRdfResolveHypermediaOutput} from "@comunica/bus-rdf-resolve-hypermedia";
 import {KEY_CONTEXT_SOURCE} from "@comunica/bus-rdf-resolve-quad-pattern";
-import {ActionContext, IActorArgs, IActorTest} from "@comunica/core";
-import {Tree, TreeNode} from "@comunica/actor-rdf-metadata-extract-tree";
+import {IActorArgs, IActorTest} from "@comunica/core";
 
 /**
  * A comunica QPF RDF Resolve Quad Pattern Actor.

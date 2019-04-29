@@ -1,0 +1,12 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/componentsjs/^3.0.0/components/context.jsonld",
+    {
+      "npmd": "https://linkedsoftwaredependencies.org/bundles/npm/",
+      "carit": "npmd:@comunica/actor-rdf-iterator-tree/",
+      "files-carit": "carit:^1.0.0/",
+
+      "ActorRdfIteratorTree": "carit:Actor/RdfIteratorPaged/Tree"
+    }
+  ]
+}

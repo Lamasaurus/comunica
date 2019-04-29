@@ -41,7 +41,6 @@
     "lru-cache": "^5.1.1"
   },
   "peerDependencies": {
-    "@comunica/bus-http-invalidate": "^1.0.0",
     "@comunica/bus-rdf-dereference": "^1.0.0",
     "@comunica/bus-rdf-dereference-paged": "^1.0.0",
     "@comunica/bus-rdf-metadata": "^1.0.0",
@@ -49,7 +48,6 @@
     "@comunica/core": "^1.0.0"
   },
   "devDependencies": {
-    "@comunica/bus-http-invalidate": "^1.6.3",
     "@comunica/bus-rdf-dereference": "^1.6.3",
     "@comunica/bus-rdf-dereference-paged": "^1.6.3",
     "@comunica/bus-rdf-metadata": "^1.6.3",

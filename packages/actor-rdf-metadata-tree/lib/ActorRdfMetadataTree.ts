@@ -1,9 +1,5 @@
 import {ActorRdfMetadata, IActionRdfMetadata, IActorRdfMetadataOutput} from "@comunica/bus-rdf-metadata";
-import {KEY_CONTEXT_SOURCE} from "@comunica/bus-rdf-resolve-quad-pattern";
 import {IActorArgs, IActorTest} from "@comunica/core";
-import * as RDF from "rdf-js";
-import {Readable} from "stream";
-import {TreeConstructor, Tree, TreeNode, Relation} from "@comunica/actor-rdf-metadata-extract-tree";
 
 export const KEY_CONTEXT_TREE: string = "comunica/actor-rdf-resolve-hypermedia-tree:tree";
 
@@ -36,7 +32,6 @@ export class ActorRdfMetadataTree extends ActorRdfMetadata {
   }
 
   public async run(action: IActionRdfMetadata): Promise<IActorRdfMetadataOutput> {
-    debugger;
     return undefined;
   }
 

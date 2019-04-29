@@ -1,26 +1,27 @@
 {
-  "name": "@comunica/actor-rdf-dereference-paged-hypermedia",
-  "version": "1.4.5",
-  "description": "A hydra rdf-dereference-paged actor",
-  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-hypermedia",
+  "name": "@comunica/actor-rdf-iterator-tree",
+  "version": "1.6.3",
+  "description": "A hydra rdf-dereference tree iterator actor",
+  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-tree",
   "lsd:components": "components/components.jsonld",
   "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-hypermedia/^1.0.0/components/context.jsonld": "components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-tree/^1.0.0/components/context.jsonld": "components/context.jsonld"
   },
   "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-hypermedia/^1.0.0/components/": "components/"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-tree/^1.0.0/components/": "components/"
   },
   "main": "index.js",
   "typings": "index",
-  "repository": "https://github.com/comunica/comunica/tree/master/packages/actor-rdf-dereference-paged-hypermedia",
+  "repository": "https://github.com/comunica/comunica/tree/master/packages/actor-rdf-iterator-tree",
   "publishConfig": {
     "access": "public"
   },
   "keywords": [
     "comunica",
     "actor",
-    "rdf-dereference-paged",
-    "hypermedia"
+    "rdf-dereference",
+    "hypermedia",
+    "tree"
   ],
   "license": "MIT",
   "bugs": {
@@ -36,24 +37,21 @@
   ],
   "dependencies": {
     "asynciterator": "^2.0.1",
-    "lru-cache": "^5.1.1",
-    "combined-stream": "^1.0.7"
+    "lru-cache": "^5.1.1"
   },
   "peerDependencies": {
     "@comunica/bus-rdf-dereference": "^1.0.0",
     "@comunica/bus-rdf-dereference-paged": "^1.0.0",
     "@comunica/bus-rdf-metadata": "^1.0.0",
     "@comunica/bus-rdf-metadata-extract": "^1.0.0",
-    "@comunica/bus-rdf-dereference-paged-iterator": "^1.0.0",
     "@comunica/core": "^1.0.0"
   },
   "devDependencies": {
-    "@comunica/bus-rdf-dereference": "^1.4.0",
-    "@comunica/bus-rdf-dereference-paged": "^1.4.0",
-    "@comunica/bus-rdf-dereference-paged-iterator": "^1.4.0",
-    "@comunica/bus-rdf-metadata": "^1.4.0",
-    "@comunica/bus-rdf-metadata-extract": "^1.4.0",
-    "@comunica/core": "^1.4.0"
+    "@comunica/bus-rdf-dereference": "^1.6.3",
+    "@comunica/bus-rdf-dereference-paged": "^1.6.3",
+    "@comunica/bus-rdf-metadata": "^1.6.3",
+    "@comunica/bus-rdf-metadata-extract": "^1.6.3",
+    "@comunica/core": "^1.6.3"
   },
   "jest": {
     "globals": {

@@ -14,6 +14,7 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/bus-rdf-dereference-paged/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-dereference-paged-hypermedia/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-paged-next/^1.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-iterator-tree/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-resolve-quad-pattern-hypermedia/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-resolve-hypermedia-qpf/^1.0.0/components/context.jsonld",
     "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-rdf-resolve-hypermedia-tree/^1.0.0/components/context.jsonld",
@@ -78,6 +79,10 @@
     {
       "@id": "config-sets:resolve-hypermedia.json#myRdfIteratorPagedNext",
       "@type": "ActorRdfIteratorPagedNext"
+    },
+    {
+      "@id": "config-sets:resolve-hypermedia.json#myRdfIteratorTree",
+      "@type": "ActorRdfIteratorTree"
     },
 
     {

@@ -608,6 +608,14 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@comunica/actor-rdf-dereference-paged-next@^1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@comunica/actor-rdf-dereference-paged-next/-/actor-rdf-dereference-paged-next-1.6.3.tgz#a92dc541700bd2d02d21e242ebf365e65702c8b8"
+  integrity sha512-8VWZUSYDBCuwAgo31yjjqlwBtG5hANktgtLYouk+TGeFUtfh6VDLWQ+Pb2aXkmQZ9r2Kk+OygqsPUHPCPiKAFA==
+  dependencies:
+    asynciterator "^2.0.1"
+    lru-cache "^5.1.1"
+
 "@comunica/actor-rdf-resolve-quad-pattern-qpf@^1.4.4":
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/@comunica/actor-rdf-resolve-quad-pattern-qpf/-/actor-rdf-resolve-quad-pattern-qpf-1.4.4.tgz#bcd0d63e5fcc4d204fd7e04fae113eedec9a34f4"
@@ -2742,7 +2750,7 @@ columnify@^1.5.4:
     strip-ansi "^3.0.0"
     wcwidth "^1.0.0"
 
-combined-stream@^1.0.6, combined-stream@~1.0.6:
+combined-stream@^1.0.6, combined-stream@^1.0.7, combined-stream@~1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.7.tgz#2d1d24317afb8abe95d6d2c0b07b57813539d828"
   integrity sha512-brWl9y6vOB1xYPZcpZde3N9zDByXTosAeMDo4p1wzo6UMOX4vumB+TP1RZ76sfE6Md68Q0NJSrE/gbezd4Ul+w==

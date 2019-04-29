@@ -10,7 +10,6 @@ import {Readable} from "stream";
 export class ActorRdfMetadataCopy extends ActorRdfMetadata {
 
   constructor(args: IActorArgs<IActionRdfMetadata, IActorTest, IActorRdfMetadataOutput>) {
-    debugger;
     super(args);
   }
 
