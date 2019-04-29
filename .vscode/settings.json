@@ -1,0 +1,7 @@
+{
+  "files.exclude": {
+    "packages/**/**/**.js": true,
+    "packages/**/**/**.js.map": true,
+    "packages/**/**/**.d.ts": true,
+  }
+}

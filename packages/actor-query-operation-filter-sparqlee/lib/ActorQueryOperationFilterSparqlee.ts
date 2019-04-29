@@ -10,6 +10,8 @@ import {
 } from "@comunica/bus-query-operation";
 import { ActionContext, IActorTest } from "@comunica/core";
 
+export const KEY_CONTEXT_FILTER: string = "@comunica/actor-query-operation-filter-sparqlee:filter";
+
 /**
  * A comunica Filter Sparqlee Query Operation Actor.
  */
@@ -28,6 +30,8 @@ export class ActorQueryOperationFilterSparqlee extends ActorQueryOperationTypedM
 
   public async runOperation(pattern: Algebra.Filter, context: ActionContext)
     : Promise<IActorQueryOperationOutputBindings> {
+
+    context = this.setFilterInContext(pattern, context);
 
     const outputRaw = await this.mediatorQueryOperation.mediate({ operation: pattern.input, context });
     const output = ActorQueryOperation.getSafeBindings(outputRaw);
