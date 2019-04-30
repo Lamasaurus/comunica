@@ -608,10 +608,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@comunica/actor-rdf-dereference-paged-next@^1.6.3":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@comunica/actor-rdf-dereference-paged-next/-/actor-rdf-dereference-paged-next-1.6.3.tgz#a92dc541700bd2d02d21e242ebf365e65702c8b8"
-  integrity sha512-8VWZUSYDBCuwAgo31yjjqlwBtG5hANktgtLYouk+TGeFUtfh6VDLWQ+Pb2aXkmQZ9r2Kk+OygqsPUHPCPiKAFA==
+"@comunica/actor-rdf-dereference-paged-next@^1.6.6":
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/@comunica/actor-rdf-dereference-paged-next/-/actor-rdf-dereference-paged-next-1.6.6.tgz#db04da4073aad0d684fa68ca71a53acd0e83c326"
+  integrity sha512-VW3Rz2Jr8OnANF1nMD5W2ynlL7YyR7TYXDvSu8QBu2lZmHvyHUnlh7C1IozQFD2bcINt8A7/nFUH1oTqAc+ddQ==
   dependencies:
     asynciterator "^2.0.1"
     lru-cache "^5.1.1"
@@ -4659,6 +4659,11 @@ is-stream@^1.0.1, is-stream@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
   integrity sha1-EtSj3U5o4Lec6428hBc66A2RykQ=
+
+is-stream@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-2.0.0.tgz#bde9c32680d6fae04129d6ac9d921ce7815f78e3"
+  integrity sha512-XCoy+WlUr7d1+Z8GgSuXmpuUFC9fOhRXglJMx+dwLKTkL44Cjd4W1Z5P+BQZpr+cR93aGP4S/s7Ftw6Nd/kiEw==
 
 is-subset@^0.1.1:
   version "0.1.1"

@@ -1,0 +1,9 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/actor-query-operation-filter-tree-string/^1.0.0/components/context.jsonld",
+  "@id": "npmd:@comunica/actor-query-operation-filter-tree-string",
+  "@type": "Module",
+  "requireName": "@comunica/actor-query-operation-filter-tree-string",
+  "import": [
+    "files-caqofts:components/Actor/QueryOperation/FilterTreeString.jsonld"
+  ]
+}

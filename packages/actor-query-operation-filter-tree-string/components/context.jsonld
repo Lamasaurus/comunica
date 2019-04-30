@@ -1,0 +1,12 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/componentsjs/^3.0.0/components/context.jsonld",
+    {
+      "npmd": "https://linkedsoftwaredependencies.org/bundles/npm/",
+      "caqofts": "npmd:@comunica/actor-query-operation-filter-tree-string/",
+      "files-caqofts": "caqofts:^1.0.0/",
+
+      "ActorQueryOperationFilterTreeString": "caqofts:Actor/QueryOperation/FilterTreeString"
+    }
+  ]
+}

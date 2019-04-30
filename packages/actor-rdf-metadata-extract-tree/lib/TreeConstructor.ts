@@ -9,7 +9,7 @@ export class TreeConstructor {
   private nodeIdMap: { [id: string]: string } = {};
   private relations: { [id: string]: string[] } = {};
   private relationTypes: { [id: string]: string } = {};
-  private treeMembers: { [id: string]: string[] } = {};
+  private treeMembers: { [id: string]: Set<string> } = {};
   private potentialData: { [id: string]: any[] } = {};
 
   public constructTree() {
@@ -31,13 +31,16 @@ export class TreeConstructor {
     }
 
     // Add the members to the nodes
-    for (const nodeId in this.treeMembers)
-      for (const member of this.treeMembers[nodeId])
+    for (const nodeId in this.treeMembers) {
+      for (const member of this.treeMembers[nodeId]) {
         this.nodes[nodeId].addMembers(this.loadData(member));
+      }
+    }
 
     // Add values to the nodes
-    for (const node of Object.keys(this.nodes))
+    for (const node of Object.keys(this.nodes)) {
       this.nodes[node].setValue(this.nodeValues[node]);
+    }
 
     return new Tree(this.nodes);
   }
@@ -47,7 +50,10 @@ export class TreeConstructor {
   }
 
   public addMember(nodeId: string, blankNodeId: string) {
-    this.addToDictList(this.treeMembers, nodeId, blankNodeId);
+    if (this.treeMembers[nodeId])
+      this.treeMembers[nodeId].add(blankNodeId);
+    else
+      this.treeMembers[nodeId] = new Set([blankNodeId]);
   }
 
   public addRelation(par: string, child: string) {

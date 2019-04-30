@@ -2,7 +2,7 @@ import { ActionContext } from "@comunica/core";
 import { Tree } from "./Tree";
 import { TreeNode } from "./TreeNode";
 
-export const KEY_TREE_RELATION_STRING =
+export const KEY_CONTEXT_TREE_RELATION_STRING =
   "@comunica/actor-rdf-metadata-extract-tree:nameFilter";
 
 const RELATIONAL_IMPLEMENTATIONS: {
@@ -25,7 +25,7 @@ const RELATIONAL_IMPLEMENTATIONS: {
       .filter((value) => typeof value === "string")
       .join("");
 
-    const filterValue = context.get(KEY_TREE_RELATION_STRING, "");
+    const filterValue = context.get(KEY_CONTEXT_TREE_RELATION_STRING, "");
 
     // Check if the valueString is the start of the filterValue or visaversa
     return (
