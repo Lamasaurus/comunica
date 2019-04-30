@@ -84,12 +84,17 @@ export class ActorRdfDereferencePagedHypermedia extends ActorRdfDereferencePaged
         .then((output) => output.metadata));
     };
 
-    const iteratorOutput: IActorRdfDereferencePagedIteratorOutput = await this.mediatorDereferencePagedIterator.mediate({ context: action.context,  firstPageUrl: firstPageUrl, firstPageData: firstPageMetaSplit.data,
-      firstPageMetadata: firstPageMetadata, mediatorRdfDereference: this.mediatorRdfDereference, mediatorMetadata: this.mediatorMetadata, mediatorMetadataExtract: this.mediatorMetadataExtract });
+    const iteratorOutput: IActorRdfDereferencePagedIteratorOutput = 
+      await this.mediatorDereferencePagedIterator.mediate({ 
+        context: action.context,
+        firstPageData: firstPageMetaSplit.data,
+        firstPageMetadata,
+        firstPageUrl,
+        mediatorMetadata: this.mediatorMetadata,
+        mediatorMetadataExtract: this.mediatorMetadataExtract,
+        mediatorRdfDereference: this.mediatorRdfDereference,
+      });
     const iterator: AsyncIterator<RDF.Quad> & RDF.Stream = iteratorOutput.iterator;
-    // new MediatedPagedAsyncRdfIterator(firstPageUrl, firstPageMetaSplit.data,
-    //  firstPageMetadata, this.mediatorRdfDereference, this.mediatorMetadata, this.mediatorMetadataExtract,
-    //  action.context);
     
     return { firstPageUrl, data: iterator, firstPageMetadata, triples: firstPage.triples };
   }

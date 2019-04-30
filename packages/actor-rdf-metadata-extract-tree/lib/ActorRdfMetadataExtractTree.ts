@@ -23,7 +23,6 @@ export class ActorRdfMetadataExtractTree extends ActorRdfMetadataExtract
   ];
   public static readonly TYPE: string =
     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
-  public readonly predicates: string[];
 
   constructor(args: IActorRdfParseFixedMediaTypesArgs) {
     super(args);
@@ -103,6 +102,4 @@ export interface IActorRdfParseFixedMediaTypesArgs
     IActionRdfMetadataExtract,
     IActorTest,
     IActorRdfMetadataExtractOutput
-  > {
-  predicates: string[];
-}
+  > {}

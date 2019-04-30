@@ -11,7 +11,7 @@ import { ActionContext, IActorTest } from "@comunica/core";
 import { KEY_CONTEXT_TREE_RELATION_STRING } from "@comunica/actor-rdf-metadata-extract-tree";
 
 /**
- * A comunica Filter Sparqlee Query Operation Actor.
+ * A comunica Filter Tree String Query Operation Actor.
  */
 export class ActorQueryOperationFilterTreeString extends ActorQueryOperationTypedMediated<
   Algebra.Filter

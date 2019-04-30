@@ -1,8 +1,7 @@
 import { TreeNode } from "./TreeNode";
 
 export class Tree {
-  private nodes: { [id: string]: TreeNode } = {};
-  private loadingNode: TreeNode;
+  private nodes: { [id: string]: TreeNode };
 
   constructor(nodes: { [id: string]: TreeNode }) {
     this.nodes = nodes;

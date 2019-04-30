@@ -5,12 +5,12 @@ import { TreeRelation } from "./TreeRelation";
 
 export class TreeConstructor {
   public nodeValues: { [id: string]: any } = {};
-  private nodes: { [id: string]: TreeNode } = {};
-  private nodeIdMap: { [id: string]: string } = {};
-  private relations: { [id: string]: string[] } = {};
-  private relationTypes: { [id: string]: string } = {};
-  private treeMembers: { [id: string]: Set<string> } = {};
-  private potentialData: { [id: string]: any[] } = {};
+  public nodes: { [id: string]: TreeNode } = {};
+  public nodeIdMap: { [id: string]: string } = {};
+  public relations: { [id: string]: string[] } = {};
+  public relationTypes: { [id: string]: string } = {};
+  public treeMembers: { [id: string]: Set<string> } = {};
+  public potentialData: { [id: string]: any[] } = {};
 
   public constructTree() {
     if (Object.keys(this.nodes).length == 0) return;
@@ -32,9 +32,9 @@ export class TreeConstructor {
 
     // Add the members to the nodes
     for (const nodeId in this.treeMembers) {
-      for (const member of this.treeMembers[nodeId]) {
+      this.treeMembers[nodeId].forEach((member) => {
         this.nodes[nodeId].addMembers(this.loadData(member));
-      }
+      });
     }
 
     // Add values to the nodes
@@ -50,10 +50,8 @@ export class TreeConstructor {
   }
 
   public addMember(nodeId: string, blankNodeId: string) {
-    if (this.treeMembers[nodeId])
-      this.treeMembers[nodeId].add(blankNodeId);
-    else
-      this.treeMembers[nodeId] = new Set([blankNodeId]);
+    if (this.treeMembers[nodeId]) this.treeMembers[nodeId].add(blankNodeId);
+    else this.treeMembers[nodeId] = new Set([blankNodeId]);
   }
 
   public addRelation(par: string, child: string) {
